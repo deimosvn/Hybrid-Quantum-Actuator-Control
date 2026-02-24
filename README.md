@@ -1,6 +1,6 @@
 # 🚀 Sistema de Control Híbrido Cuántico-Clásico para Rover
 
-**Autor**: Diego (@deimsovn) | **Licencia**: MIT | **Última actualización**: Febrero 2026
+**Autor**: Diego Eduardo Martínez Cruz (@deimsovn) | **Licencia**: MIT | **Última actualización**: Febrero 2026
 
 ---
 
@@ -1415,7 +1415,7 @@ for alpha in np.linspace(0, 1, 10):
 **MIT License**
 
 ```
-Copyright (c) 2026 Diego (@deimsovn)
+Copyright (c) 2026 Diego Eduardo Martínez Cruz (@deimsovn)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -1462,7 +1462,7 @@ git push origin feature/my-improvement
 ## 📞 Contacto y Soporte
 
 - **🤖 GitHub**: [@deimsovn](https://github.com/deimsovn)
-- **📧 Email**: contact@deimsovn.com
+- **📧 Email**: diego.martinez111213@gmail.com
 - **💬 Discussions**: Abrir en GitHub Issues
 - **📚 Wiki**: [Documentación Completa](https://github.com/deimsovn/QuantumControl_Rover/wiki)
 

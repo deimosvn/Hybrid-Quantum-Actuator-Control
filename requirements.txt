@@ -1,0 +1,25 @@
+# Dependencias del Sistema de Control Híbrido Cuántico-Clásico para Rover
+
+# Núcleo científico
+numpy>=1.21.0          # Computación científica
+scipy>=1.7.0           # Integración numérica, optimización
+
+# Quantum computing
+qiskit>=0.43.0         # Framework cuántico de IBM
+qiskit-aer>=0.12.0     # Simulador cuántico local
+qiskit-algorithms>=0.2.0  # Algoritmos cuánticos (QAOA, VQE)
+
+# Utilidades
+matplotlib>=3.5.0      # Visualización de resultados (opcional)
+matplotlib-inline      # Soporte para Jupyter
+
+# Desarrollo y testing (opcional)
+pytest>=6.2.0          # Testing
+pytest-cov>=2.12.1     # Cobertura de tests
+black>=21.12b0         # Formateo de código
+pylint>=2.12.0         # Linting
+mypy>=0.910            # Type checking
+
+# Documentación (opcional)
+sphinx>=4.4.0          # Generador de documentación
+sphinx-rtd-theme>=1.0  # Tema para documentación

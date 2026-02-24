@@ -222,8 +222,8 @@ class QAOAController(QuantumOptimizer):
         Returns:
             Costo total (escalar)
         """
-        state_cost = x[:2].T @ Q @ x[:2]  # Costo de estado
-        control_cost = x[2:]**2  # Costo de control (u² con R=1)
+        state_cost = float(x[:2].T @ Q @ x[:2])  # Costo de estado
+        control_cost = float(np.sum(x[2:]**2))  # Costo de control (u² con R=1)
         return float(state_cost + control_cost)
     
     def _encode_state_to_qubits(self, error_state: np.ndarray) -> np.ndarray:
@@ -280,9 +280,11 @@ class QAOAController(QuantumOptimizer):
         """
         try:
             if self.use_simulator and QISKIT_AVAILABLE:
-                return self._optimize_quantum(error_state)
+                result = self._optimize_quantum(error_state)
             else:
-                return self._optimize_classical(error_state)
+                result = self._optimize_classical(error_state)
+            # Garantizar que retorna un float, no un array
+            return float(result)
         except Exception as e:
             logger.error(f"Error en optimización: {e}")
             return 0.0
@@ -338,7 +340,7 @@ class QAOAController(QuantumOptimizer):
         control = self._decode_qubits_to_control(best_bitstring)
         
         logger.debug(f"QAOA optimization: {best_bitstring} -> control: {control:.4f}")
-        return control
+        return float(control)
     
     def _optimize_classical(self, error_state: np.ndarray) -> float:
         """
@@ -389,7 +391,7 @@ class FallbackController(QuantumOptimizer):
     
     def cost_function(self, x: np.ndarray, Q: np.ndarray, R: np.ndarray) -> float:
         """Calcula costo (ver docstring padre)."""
-        return float(x[:2].T @ Q @ x[:2] + x[2:]**2)
+        return float(float(x[:2].T @ Q @ x[:2]) + float(np.sum(x[2:]**2)))
     
     def optimize(self, error_state: np.ndarray) -> float:
         """

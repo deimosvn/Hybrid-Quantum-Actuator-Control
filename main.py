@@ -110,7 +110,7 @@ class HybridRoverController:
             Vector [error_posición, error_velocidad]
         """
         position_error = self.reference_position - rover_state['position']
-        velocity_error = self.reference_omega - rover_state['omega']
+        velocity_error = self.reference_omega - rover_state['motor']['omega']
         
         return np.array([position_error, velocity_error])
     
@@ -156,6 +156,7 @@ class HybridRoverController:
             # 3. Optimizar control
             opt_start = time.time()
             control_normalized = self.optimizer.optimize(error_state)
+            control_normalized = float(control_normalized)  # Garantizar que es un float
             opt_time_ms = (time.time() - opt_start) * 1000
             
             # 4. Convertir a voltaje
@@ -166,10 +167,11 @@ class HybridRoverController:
             
             # 6. Calcular costo
             cost = self.optimizer.cost_function(
-                np.array([error_state[0], error_state[1], control_normalized]),
+                np.array([float(error_state[0]), float(error_state[1]), float(control_normalized)]),
                 self.optimizer.Q,
                 self.optimizer.R
             )
+            cost = float(cost)  # Garantizar que es un float
             
             # 7. Crear registro de telemetría
             elapsed_time = time.time() - self.start_time
@@ -229,6 +231,9 @@ class HybridRoverController:
                 # Ejecutar paso de control
                 state, record = self.control_step()
                 
+                if state is None or record is None:
+                    continue
+                
                 # Actualizar referencia (rampa lineal)
                 if step < num_steps // 3:
                     self.reference_omega = 5.0
@@ -242,7 +247,7 @@ class HybridRoverController:
                     elapsed = step / frequency
                     progress = 100 * step / num_steps
                     print(f"[{progress:5.1f}%] t={elapsed:6.2f}s | "
-                          f"ω={state['omega']:6.2f} rad/s | "
+                          f"w={state['omega']:6.2f} rad/s | "
                           f"e={state['error']:6.3f} | "
                           f"u={record.control_input:6.2f}V")
                 

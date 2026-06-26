@@ -1,0 +1,12 @@
+# Keep the build context small and reproducible.
+build/
+install/
+log/
+.git/
+.github/
+**/__pycache__/
+*.pyc
+logs/
+docs/images/*
+.venv/
+venv/

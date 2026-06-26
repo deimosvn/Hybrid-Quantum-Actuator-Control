@@ -1,0 +1,29 @@
+# Parameter overrides for a deterministic quantum-vs-classical benchmark.
+# Use as a layered params file:
+#   ros2 launch quantum_rover_bringup simulation.launch.py \
+#       params_file:=$(ros2 pkg prefix quantum_rover_bringup)/share/quantum_rover_bringup/config/benchmark.yaml
+
+/**/quantum_controller:
+  ros__parameters:
+    use_quantum: true
+    num_qubits: 3
+    num_layers: 2
+    control_frequency: 100.0
+    pwm_max: 12.0
+    reference_omega: 8.0
+    q_position_weight: 12.0
+    q_velocity_weight: 1.0
+    r_control_weight: 0.5
+
+/**/rover_simulator:
+  ros__parameters:
+    sim_frequency: 1000
+    publish_frequency: 100.0
+    rover:
+      traction_loss: 0.3        # harsher, sandy terrain
+
+/**/telemetry_logger:
+  ros__parameters:
+    output_dir: ./logs/benchmark
+    file_prefix: benchmark
+    save_plots: true

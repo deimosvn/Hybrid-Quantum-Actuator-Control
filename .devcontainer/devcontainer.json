@@ -1,0 +1,31 @@
+{
+  "name": "Quantum Rover (ROS 2 Humble)",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "args": { "ROS_DISTRO": "humble" }
+  },
+  "runArgs": [
+    "--network=host",
+    "--ipc=host"
+  ],
+  "containerEnv": {
+    "ROS_DOMAIN_ID": "0",
+    "RCUTILS_COLORIZED_OUTPUT": "1"
+  },
+  "workspaceFolder": "/ros_ws",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/ros_ws,type=bind",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-iot.vscode-ros",
+        "ms-azuretools.vscode-docker",
+        "redhat.vscode-xml"
+      ],
+      "settings": {
+        "python.analysis.extraPaths": ["/opt/ros/humble/lib/python3.10/site-packages"]
+      }
+    }
+  },
+  "postCreateCommand": "rosdep update && rosdep install --from-paths src --ignore-src -r -y || true"
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>quantum_rover_control</name>
+  <version>1.0.0</version>
+  <description>
+    Hybrid quantum-classical actuator control for an autonomous rover. Provides
+    a lifecycle-managed controller (QAOA optimizer with a PID fallback), a plant
+    simulator and a telemetry logger as rclpy nodes.
+  </description>
+
+  <maintainer email="diego.martinez111213@gmail.com">Diego Eduardo Martinez Cruz</maintainer>
+  <license>MIT</license>
+  <url type="repository">https://github.com/deimosvn/Hybrid-Quantum-Actuator-Control</url>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>nav_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>diagnostic_msgs</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>rcl_interfaces</exec_depend>
+  <exec_depend>quantum_rover_interfaces</exec_depend>
+  <exec_depend>python3-numpy</exec_depend>
+  <exec_depend>python3-scipy</exec_depend>
+
+  <!-- Quantum backend is optional; the controller degrades to PID without it. -->
+  <exec_depend>python3-matplotlib</exec_depend>
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

@@ -1,0 +1,21 @@
+# Drive the rover through a sequence of angular-velocity setpoints and report
+# closed-loop tracking performance. Each setpoint i is held for hold_duration[i]
+# seconds. Useful for automated benchmarking of the active controller.
+#
+# --- Goal ---------------------------------------------------------------
+float64[] target_omega       # Ordered angular-velocity setpoints (rad/s)
+float64[] hold_duration      # Seconds to hold each setpoint (same length)
+float64   settle_tolerance   # |error| under which a setpoint is "settled" (rad/s)
+---
+# --- Result -------------------------------------------------------------
+float64 rmse_velocity        # Root-mean-square velocity error over the run
+float64 iae_velocity         # Integral of |velocity error|
+float64 control_energy       # Sum of |control input|
+bool    converged            # True if every setpoint settled within tolerance
+---
+# --- Feedback -----------------------------------------------------------
+float64 current_omega        # Current shaft angular velocity (rad/s)
+float64 target_omega         # Setpoint currently being tracked (rad/s)
+float64 velocity_error       # target - current (rad/s)
+float64 elapsed_time         # Seconds since goal acceptance
+float64 progress_percent     # Completion of the profile [0, 100]

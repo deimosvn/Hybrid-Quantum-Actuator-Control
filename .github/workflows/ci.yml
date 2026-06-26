@@ -1,0 +1,53 @@
+name: ROS 2 CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  colcon-build-test:
+    name: build & test (${{ matrix.ros_distro }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - ros_distro: humble
+            os: ubuntu-22.04
+          - ros_distro: jazzy
+            os: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup ROS 2 ${{ matrix.ros_distro }}
+        uses: ros-tooling/setup-ros@v0.7
+        with:
+          required-ros-distributions: ${{ matrix.ros_distro }}
+
+      - name: Build and test workspace
+        uses: ros-tooling/action-ros-ci@v0.4
+        with:
+          target-ros2-distro: ${{ matrix.ros_distro }}
+          package-name: >-
+            quantum_rover_interfaces
+            quantum_rover_control
+            quantum_rover_description
+            quantum_rover_bringup
+          colcon-defaults: |
+            {
+              "test": {
+                "event-handlers": ["console_direct+"]
+              }
+            }
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: colcon-test-results-${{ matrix.ros_distro }}
+          path: ros_ws/log/latest_test/
+          if-no-files-found: ignore

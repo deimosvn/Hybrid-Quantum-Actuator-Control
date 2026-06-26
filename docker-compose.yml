@@ -1,0 +1,22 @@
+# Convenience orchestration for local development / headless benchmarking.
+#   docker compose run --rm rover            # interactive shell
+#   docker compose run --rm rover ros2 launch quantum_rover_bringup simulation.launch.py
+services:
+  rover:
+    build:
+      context: .
+      args:
+        ROS_DISTRO: humble
+    image: quantum_rover:humble
+    container_name: quantum_rover
+    # Shared memory + host networking help DDS discovery on a single host.
+    network_mode: host
+    ipc: host
+    environment:
+      - ROS_DOMAIN_ID=0
+      - RCUTILS_COLORIZED_OUTPUT=1
+    volumes:
+      # Persist generated telemetry/plots on the host.
+      - ./logs:/ros_ws/logs
+    stdin_open: true
+    tty: true

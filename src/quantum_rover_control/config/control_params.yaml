@@ -1,0 +1,50 @@
+# Default parameters for the quantum_rover_control nodes.
+# Load with:  ros2 run quantum_rover_control <node> --ros-args --params-file <this>
+# Node names are matched with the "/**" wildcard so the file works under any
+# namespace chosen at launch time.
+
+/**/quantum_controller:
+  ros__parameters:
+    use_quantum: true
+    num_qubits: 2
+    num_layers: 1
+    control_frequency: 100.0      # Hz
+    pwm_max: 12.0                 # V
+    reference_omega: 5.0          # rad/s
+    reference_position: 0.0       # m
+    # LQR cost J = x^T Q x + u^T R u
+    q_position_weight: 10.0
+    q_velocity_weight: 1.0
+    r_control_weight: 0.5
+
+/**/rover_simulator:
+  ros__parameters:
+    sim_frequency: 1000           # Hz (integration)
+    publish_frequency: 100.0      # Hz (state publication)
+    odom_frame: odom
+    base_frame: base_link
+    wheel_joints:
+      - front_left_wheel_joint
+      - front_right_wheel_joint
+      - rear_left_wheel_joint
+      - rear_right_wheel_joint
+    motor:
+      K_t: 0.15
+      K_e: 0.15
+      R: 1.5
+      J: 0.01
+      b: 0.03
+      V_max: 12.0
+      friction_coefficient: 0.15
+    rover:
+      mass: 5.0
+      wheel_radius: 0.1
+      num_wheels: 4.0
+      traction_loss: 0.2
+
+/**/telemetry_logger:
+  ros__parameters:
+    output_dir: ./logs
+    file_prefix: hybrid_control
+    save_plots: true
+    flush_on_shutdown: true

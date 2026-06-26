@@ -1,0 +1,12 @@
+# Compute a single optimal control action for a given error state.
+# Exposes the QAOA / fallback optimizer as a stateless ROS 2 service so other
+# nodes (or CLI tooling) can query it without owning the control loop.
+# Request
+float64 position_error       # reference_position - position (m)
+float64 velocity_error       # reference_omega - omega (rad/s)
+---
+# Response
+float64 control_normalized   # Optimal control in [-1, 1]
+float64 cost                 # LQR cost evaluated at the returned action
+float64 optimization_time_ms # Time spent solving (ms)
+string  source               # "quantum" or "classical"

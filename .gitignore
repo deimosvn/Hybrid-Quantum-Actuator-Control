@@ -61,3 +61,15 @@ pytest.ini
 # Resultados de simulación (opcional - comentar si quieres incluirlos)
 # results/
 # output/
+
+# ---------------------------------------------------------------------------
+# ROS 2 / colcon workspace artifacts
+# ---------------------------------------------------------------------------
+/build/
+/install/
+/log/
+.colcon/
+
+# rosdep / ament
+.ros/
+*.rosinstall

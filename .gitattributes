@@ -1,0 +1,21 @@
+# Normalize line endings: this is a Linux/ROS 2 project, so keep LF in the repo
+# and on checkout. Prevents CRLF from breaking shell shebangs and colcon builds
+# when the repo is cloned on Windows and built in Docker/WSL.
+* text=auto eol=lf
+
+# Explicitly LF for scripts and source that run inside the container.
+*.sh    text eol=lf
+*.py    text eol=lf
+*.bash  text eol=lf
+*.yaml  text eol=lf
+*.yml   text eol=lf
+*.xml   text eol=lf
+*.xacro text eol=lf
+*.urdf  text eol=lf
+
+# Treat binary assets as binary.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.stl binary
+*.dae binary

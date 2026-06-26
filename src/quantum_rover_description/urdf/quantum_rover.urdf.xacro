@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<!-- Copyright 2026 Diego Eduardo Martinez Cruz / SPDX-License-Identifier: MIT -->
+<robot name="quantum_rover" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ===================== Properties ============================= -->
+  <xacro:property name="body_length" value="0.5"/>
+  <xacro:property name="body_width"  value="0.35"/>
+  <xacro:property name="body_height" value="0.15"/>
+  <xacro:property name="body_mass"   value="5.0"/>
+
+  <xacro:property name="wheel_radius" value="0.1"/>
+  <xacro:property name="wheel_width"  value="0.05"/>
+  <xacro:property name="wheel_mass"   value="0.5"/>
+
+  <xacro:property name="wheel_xoff" value="0.18"/>
+  <xacro:property name="wheel_yoff" value="0.21"/>
+
+  <!-- ===================== Materials ============================== -->
+  <material name="rover_blue"><color rgba="0.15 0.35 0.75 1.0"/></material>
+  <material name="wheel_dark"><color rgba="0.1 0.1 0.1 1.0"/></material>
+  <material name="quantum_cyan"><color rgba="0.0 0.85 0.9 1.0"/></material>
+
+  <!-- ===================== Inertial macros ======================= -->
+  <xacro:macro name="box_inertia" params="m x y z">
+    <inertial>
+      <mass value="${m}"/>
+      <inertia ixx="${m*(y*y+z*z)/12.0}" ixy="0.0" ixz="0.0"
+               iyy="${m*(x*x+z*z)/12.0}" iyz="0.0"
+               izz="${m*(x*x+y*y)/12.0}"/>
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="cylinder_inertia" params="m r l">
+    <inertial>
+      <mass value="${m}"/>
+      <inertia ixx="${m*(3*r*r+l*l)/12.0}" ixy="0.0" ixz="0.0"
+               iyy="${m*(3*r*r+l*l)/12.0}" iyz="0.0"
+               izz="${m*r*r/2.0}"/>
+    </inertial>
+  </xacro:macro>
+
+  <!-- ===================== Base ================================== -->
+  <link name="base_footprint"/>
+
+  <link name="base_link">
+    <visual>
+      <geometry><box size="${body_length} ${body_width} ${body_height}"/></geometry>
+      <material name="rover_blue"/>
+    </visual>
+    <collision>
+      <geometry><box size="${body_length} ${body_width} ${body_height}"/></geometry>
+    </collision>
+    <xacro:box_inertia m="${body_mass}" x="${body_length}" y="${body_width}" z="${body_height}"/>
+  </link>
+
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 ${wheel_radius + body_height/2}" rpy="0 0 0"/>
+  </joint>
+
+  <!-- A small "quantum payload" pod to give the model some character. -->
+  <link name="quantum_payload">
+    <visual>
+      <geometry><box size="0.18 0.18 0.1"/></geometry>
+      <material name="quantum_cyan"/>
+    </visual>
+    <xacro:box_inertia m="0.3" x="0.18" y="0.18" z="0.1"/>
+  </link>
+  <joint name="payload_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="quantum_payload"/>
+    <origin xyz="0 0 ${body_height/2 + 0.05}" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ===================== Wheel macro =========================== -->
+  <xacro:macro name="wheel" params="name x y">
+    <link name="${name}">
+      <visual>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry>
+        <material name="wheel_dark"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry>
+      </collision>
+      <xacro:cylinder_inertia m="${wheel_mass}" r="${wheel_radius}" l="${wheel_width}"/>
+    </link>
+
+    <joint name="${name}_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="${name}"/>
+      <origin xyz="${x} ${y} ${-body_height/2}" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+      <dynamics damping="0.05" friction="0.03"/>
+    </joint>
+  </xacro:macro>
+
+  <xacro:wheel name="front_left_wheel"  x="${wheel_xoff}"  y="${wheel_yoff}"/>
+  <xacro:wheel name="front_right_wheel" x="${wheel_xoff}"  y="${-wheel_yoff}"/>
+  <xacro:wheel name="rear_left_wheel"   x="${-wheel_xoff}" y="${wheel_yoff}"/>
+  <xacro:wheel name="rear_right_wheel"  x="${-wheel_xoff}" y="${-wheel_yoff}"/>
+
+</robot>

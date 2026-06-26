@@ -1,4 +1,12 @@
-# Dependencias del Sistema de Control Híbrido Cuántico-Clásico para Rover
+# Python dependencies for the STANDALONE / algorithm-development path
+# (running quantum_rover_control.sim_demo and the unit tests WITHOUT ROS 2).
+#
+# When building the ROS 2 workspace, the ROS dependencies (rclpy, std_msgs,
+# nav_msgs, tf2_ros, …) are resolved by rosdep from each package.xml — you do
+# NOT install them from here. Qiskit remains optional: without it the
+# controller transparently falls back to PID.
+#
+#   pip install -r requirements.txt
 
 # Núcleo científico
 numpy>=1.21.0          # Computación científica

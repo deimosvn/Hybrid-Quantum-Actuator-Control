@@ -1,0 +1,8 @@
+# Switch the active control backend at runtime (e.g. for A/B benchmarking).
+# Request
+string mode            # "quantum" or "classical"
+---
+# Response
+bool   success         # True if the mode was accepted and applied
+string active_mode     # Mode in effect after the call
+string message         # Human-readable status / error detail
